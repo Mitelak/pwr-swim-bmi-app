@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">BMI</string>
+    <string name="count">Count</string>
+    <string name="height_m">Height [m]</string>
+    <string name="mass_kg">Mass [Kg]</string>
+    <string name="height_in">Height [In]</string>
+    <string name="mass_lb">Mass [Lb]</string>
+    <string name="LENGTH_ERR">Pole nie może być puste</string>
+    <string name="your_bmi_is">YOUR BMI IS</string>
+
+    <string name="author">Mateusz Mitelski</string>
+    <string name="avatar_description">Awatar</string>
+
+    <string name="about_author">About author</string>
+    <string name="save">Save</string>
+    <string name="unit_switch">GB</string>
+    <string name="saved">Saved!</string>
+</resources>
