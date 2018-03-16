@@ -1,5 +1,6 @@
 package mitelski_238006.bmi;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +17,6 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
     public static final String EXTRA_RESULT = "238006.RESULT";
     public static final String SHARED_BMI = "238006.BMI";
-    private boolean isGBChecked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,23 +83,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void restoreInputs()
-    {
-        SharedPreferences settings = getApplicationContext().getSharedPreferences(SHARED_BMI, 0);
-        String mass_text = settings.getString("mass", null);
-        String height_text = settings.getString("height", null);
-        isGBChecked = settings.getBoolean("isGBChecked", false);
-
-        if (mass_text != null) {
-            EditText mass = findViewById(R.id.mass);
-            mass.setText(mass_text);
-        }
-        if (height_text != null) {
-            EditText height = findViewById(R.id.height);
-            height.setText(height_text);
-        }
-    }
-
     public void handleSwitch (View view) {
         Switch switchGB = findViewById(R.id.switch_gb);
 
@@ -109,29 +92,47 @@ public class MainActivity extends AppCompatActivity {
         if(switchGB.isChecked()) {
             mass.setText(R.string.mass_lb);
             height.setText(R.string.height_in);
-            isGBChecked = true;
         } else {
             mass.setText(R.string.mass_kg);
             height.setText(R.string.height_m);
-            isGBChecked = false;
         }
     }
 
-    private void saveInputs()
-    {
+    private void saveInputs() {
         EditText mass = findViewById(R.id.mass);
         EditText height = findViewById(R.id.height);
+        Switch isGB = findViewById(R.id.switch_gb);
 
-        SharedPreferences settings = getApplicationContext().getSharedPreferences(SHARED_BMI,0);
-        SharedPreferences.Editor editor = settings.edit();
+        SharedPreferences inputs = getApplicationContext().getSharedPreferences(SHARED_BMI, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = inputs.edit();
         editor.putString("mass", mass.getText().toString());
         editor.putString("height", height.getText().toString());
-        editor.putBoolean("isGBChecked", isGBChecked);
+        editor.putBoolean("isGB", isGB.isChecked());
 
         Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_SHORT).show();
         editor.apply();
     }
 
+    private void restoreInputs() {
+        SharedPreferences inputs = getApplicationContext().getSharedPreferences(SHARED_BMI, Context.MODE_PRIVATE);
+        String mass_text = inputs.getString("mass", null);
+        String height_text = inputs.getString("height", null);
+        Boolean isGB = inputs.getBoolean("isGB", false);
+
+        if (mass_text != null) {
+            EditText mass = findViewById(R.id.mass);
+            mass.setText(mass_text);
+        }
+        if (height_text != null) {
+            EditText height = findViewById(R.id.height);
+            height.setText(height_text);
+        }
+        if (isGB != false) {
+            Switch isGBSwitch = findViewById(R.id.switch_gb);
+            isGBSwitch.setChecked(true);
+            handleSwitch(null);
+        }
+    }
 }
 
 
